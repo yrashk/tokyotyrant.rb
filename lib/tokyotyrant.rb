@@ -21,9 +21,13 @@ module TokyoTyrant
       check_result_code
       value
     end
-
+    
     alias :[]= :put
     
+    def append(key, value)
+      put(key, value, :cat)
+    end
+        
     def get(key)
       cmd = [0xc8,0x30].pack('C2') + [key.length].pack('N') + key
       @socket.write(cmd)
