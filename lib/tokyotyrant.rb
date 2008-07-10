@@ -18,9 +18,7 @@ module TokyoTyrant
       end
       cmd = [0xc8,mod].pack('C2') + [key.length, value.length].pack('N2') + key + value
       @socket.write(cmd)
-      unless (code = @socket.read(1).unpack('C').first) == 0
-        raise "TokyoTyrant error: #{code}"
-      end
+      check_result_code
       value
     end
 
@@ -29,15 +27,20 @@ module TokyoTyrant
     def get(key)
       cmd = [0xc8,0x30].pack('C2') + [key.length].pack('N') + key
       @socket.write(cmd)
-      unless (code = @socket.read(1).unpack('C').first) == 0
-        raise "TokyoTyrant error: #{code}"
-      end
+      check_result_code
       len = @socket.read(4).unpack('N').first
       @socket.read(len)
     end
     
     alias :[] :get
+
+    private
     
+    def check_result_code
+      unless (code = @socket.read(1).unpack('C').first) == 0
+        raise "TokyoTyrant error: #{code}"
+      end
+    end
 
     
   end
