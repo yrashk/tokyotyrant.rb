@@ -85,7 +85,7 @@ module TokyoTyrant
       rescue
     end
     
-    def fwmkeys(prefix, max) # max should allow negative values, but it does not
+    def fwmkeys(prefix, max) # max should allow negative values, but it does not (Mikio said that he'll fix this bug soon)
       cmd = [0xc8,0x58].pack('C2') + [prefix.length,max].pack('N2') + prefix
       @socket.write(cmd)
       check_result_code
