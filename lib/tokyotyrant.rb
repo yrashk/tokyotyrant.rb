@@ -79,8 +79,8 @@ module TokyoTyrant
       @socket.read(len)
     end
     
-    def fwmkeys(prefix) # FIXME: does not work yet
-      cmd = [0xc8,0x58].pack('C2') + [prefix.length].pack('N') + prefix
+    def fwmkeys(prefix, max) # FIXME: does not work yet
+      cmd = [0xc8,0x58].pack('C2') + [prefix.length,max].pack('N2') + prefix
       @socket.write(cmd)
       check_result_code
       keys = []
