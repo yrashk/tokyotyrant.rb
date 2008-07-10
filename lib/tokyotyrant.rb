@@ -79,6 +79,12 @@ module TokyoTyrant
       @socket.read(len)
     end
     
+    def each_key
+      iterinit
+      yield(iternext) while true
+      rescue
+    end
+    
     def fwmkeys(prefix, max) # max should allow negative values, but it does not
       cmd = [0xc8,0x58].pack('C2') + [prefix.length,max].pack('N2') + prefix
       @socket.write(cmd)
